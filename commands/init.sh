@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-./setup.sh
+echo "Setup";
