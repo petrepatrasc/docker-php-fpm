@@ -71,7 +71,8 @@ RUN add-apt-repository ppa:ondrej/php5-5.6 && \
         php5-memcached \
         php5-mysql \
         php5-ldap \
-        supervisor
+        supervisor \
+        netcat
 
 # Supervisor
 ADD supervisor /etc/supervisor/
