@@ -45,8 +45,8 @@ ENV PHP_CONF_FILE=/etc/php5/fpm/conf.d/99-system.ini \
 
 # Pool settings
 ENV PHP_POOL_FILE=/etc/php5/fpm/pool.d/99-system.pool.conf \
-    PHP_POOL_USER=root \
-    PHP_POOL_GROUP=root \
+    PHP_POOL_USER=www-data \
+    PHP_POOL_GROUP=www-data \
     PHP_POOL_LISTEN_HOST=127.0.0.1 \
     PHP_POOL_LISTEN_PORT=9000 \
     PHP_POOL_PM_CONTROL=dynamic \
@@ -58,19 +58,23 @@ ENV PHP_POOL_FILE=/etc/php5/fpm/pool.d/99-system.pool.conf \
 
 # Install PHP
 RUN add-apt-repository ppa:ondrej/php5-5.6 && \
-    apt-get update -qq &&     \
-    apt-get install -qq -y    \
-    		php5-fpm              \
-    		php5-curl             \
-    		php5-cli              \
-    		php5-json             \
-    		php5-intl             \
-    		php5-imap             \
-    		php5-mcrypt           \
-    		php5-xdebug           \
-    		php5-memcached        \
-    		php5-mysql            \
-        php5-ldap
+    apt-get update -qq && \
+    apt-get install -qq -y \
+        php5-fpm \
+        php5-curl \
+        php5-cli \
+        php5-json \
+        php5-intl \
+        php5-imap \
+        php5-mcrypt \
+        php5-xdebug \
+        php5-memcached \
+        php5-mysql \
+        php5-ldap \
+        supervisor
+
+# Supervisor
+ADD supervisor /etc/supervisor/
 
 # Add PHP5-FPM Configuration Files
 ADD php5-fpm /etc/php5/
