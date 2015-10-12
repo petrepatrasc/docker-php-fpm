@@ -21,7 +21,11 @@ RUN apt-get update -y -qq &&  \
         software-properties-common
 
 # Conf settings
-ENV PHP_CONF_TIMEZONE=Europe/London \
+ENV PHP_CONF_FILE=/etc/php5/fpm/conf.d/99-system.ini \
+    PHP_CONF_FILE_CLI=/etc/php5/cli/conf.d/99-system.ini \
+    PHP_CONF_TIMEZONE=Europe/London \
+    PHP_CONF_MAX_EXECUTION_TIME=30 \
+    PHP_CONF_UPLOAD_LIMIT=40M \
     PHP_CONF_PHAR_READONLY=off \
     PHP_CONF_MEMORY_LIMIT=512M \
     PHP_CONF_DISPLAY_ERRORS=on \
@@ -40,7 +44,8 @@ ENV PHP_CONF_TIMEZONE=Europe/London \
     PHP_CONF_XDEBUG_TRACE_OUTPUT_NAME=trace.out.%t
 
 # Pool settings
-ENV PHP_POOL_USER=root \
+ENV PHP_POOL_FILE=/etc/php5/fpm/pool.d/99-system.pool.conf \
+    PHP_POOL_USER=root \
     PHP_POOL_GROUP=root \
     PHP_POOL_LISTEN_HOST=127.0.0.1 \
     PHP_POOL_LISTEN_PORT=9000 \
@@ -75,6 +80,6 @@ RUN sed -i 's/;daemonize = yes/daemonize = no/g' /etc/php5/fpm/php-fpm.conf && \
 		rm -f /etc/php5/fpm/pool.d/www.conf
 
 ADD commands /root/commands
-WORKDIR /root
+WORKDIR /etc/php5
 EXPOSE $PHP_POOL_LISTEN_PORT
 CMD ["/root/commands/init.sh"]

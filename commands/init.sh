@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-echo "Setup";
+DIR=$(dirname "$0");
+
+"$DIR/setup-fpm-conf.sh";
+"$DIR/setup-cli-conf.sh";
+"$DIR/setup-fpm-pool.sh";
