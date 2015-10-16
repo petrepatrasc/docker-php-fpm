@@ -74,6 +74,11 @@ RUN add-apt-repository ppa:ondrej/php5-5.6 && \
         supervisor \
         netcat
 
+# Install Composer
+RUN cd /tmp && \
+    php -r "readfile('https://getcomposer.org/installer');" | php && \
+    mv composer.phar /usr/local/bin/composer
+
 # Supervisor
 ADD supervisor /etc/supervisor/
 
