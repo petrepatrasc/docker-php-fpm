@@ -2,31 +2,20 @@ FROM petrepatrasc/docker-ubuntu
 MAINTAINER Petre Pătrașc <petre@dreamlabs.ro>
 ENV REFRESHED_AT 2015-10-12 21:41:00
 
-ENV REPOSITORY_VERSION=5.6 \
-    REPOSITORY_PACKAGE=php5
+ENV PPA_VERSION=5.5 \
+    PPA_PACKAGE=php5 \
+    PPA_NAME=php5
 
 # Conf settings
 ENV PHP_CONF_FILE=/etc/php5/fpm/conf.d/20-system.ini \
     PHP_CONF_FILE_CLI=/etc/php5/cli/conf.d/20-system.ini \
-    PHP_CONF_TIMEZONE=Europe/UTC \
+    PHP_CONF_TIMEZONE=UTC \
     PHP_CONF_MAX_EXECUTION_TIME=30 \
     PHP_CONF_UPLOAD_LIMIT=40M \
     PHP_CONF_PHAR_READONLY=off \
     PHP_CONF_MEMORY_LIMIT=512M \
     PHP_CONF_DISPLAY_ERRORS=on \
-    PHP_CONF_ERROR_REPORTING=E_ALL \
-    PHP_CONF_XDEBUG_MAX_NESTING_LEVEL=350 \
-    PHP_CONF_XDEBUG_REMOTE_ENABLE=on \
-    PHP_CONF_XDEBUG_REMOTE_HANDLER=dbgp \
-    PHP_CONF_XDEBUG_REMOTE_CONNECT_BACK=on \
-    PHP_CONF_XDEBUG_REMOTE_PORT=9005 \
-    PHP_CONF_XDEBUG_IDEKEY=xdebug \
-    PHP_CONF_XDEBUG_PROFILER_ENABLE_TRIGGER=1 \
-    PHP_CONF_XDEBUG_PROFILER_OUTPUT_DIR=/var/xdebug/profile/ \
-    PHP_CONF_XDEBUG_PROFILER_OUTPUT_NAME=profile.out.%t \
-    PHP_CONF_XDEBUG_TRACE_ENABLE_TRIGGER=1 \
-    PHP_CONF_XDEBUG_TRACE_OUTPUT_DIR=/var/xdebug/trace/ \
-    PHP_CONF_XDEBUG_TRACE_OUTPUT_NAME=trace.out.%t
+    PHP_CONF_ERROR_REPORTING=E_ALL
 
 # Pool settings
 ENV PHP_POOL_FILE=/etc/php5/fpm/pool.d/20-system.pool.conf \
@@ -42,20 +31,19 @@ ENV PHP_POOL_FILE=/etc/php5/fpm/pool.d/20-system.pool.conf \
     PHP_POOL_CATCH_WORKERS_OUTPUT=yes
 
 # Install PHP
-RUN add-apt-repository ppa:ondrej/${REPOSITORY_PACKAGE}-${REPOSITORY_VERSION} && \
+RUN add-apt-repository ppa:ondrej/${PPA_NAME} && \
     apt-get update -qq && \
     apt-get install -qq -y \
-        ${REPOSITORY_PACKAGE}-fpm \
-        ${REPOSITORY_PACKAGE}-curl \
-        ${REPOSITORY_PACKAGE}-cli \
-        ${REPOSITORY_PACKAGE}-json \
-        ${REPOSITORY_PACKAGE}-intl \
-        ${REPOSITORY_PACKAGE}-imap \
-        ${REPOSITORY_PACKAGE}-mcrypt \
-        ${REPOSITORY_PACKAGE}-xdebug \
-        ${REPOSITORY_PACKAGE}-memcached \
-        ${REPOSITORY_PACKAGE}-mysql \
-        ${REPOSITORY_PACKAGE}-ldap \
+        ${PPA_PACKAGE}-fpm \
+        ${PPA_PACKAGE}-curl \
+        ${PPA_PACKAGE}-cli \
+        ${PPA_PACKAGE}-json \
+        ${PPA_PACKAGE}-intl \
+        ${PPA_PACKAGE}-imap \
+        ${PPA_PACKAGE}-mcrypt \
+        ${PPA_PACKAGE}-memcached \
+        ${PPA_PACKAGE}-mysql \
+        ${PPA_PACKAGE}-ldap \
         supervisor \
         netcat
 
