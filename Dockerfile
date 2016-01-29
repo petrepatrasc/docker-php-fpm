@@ -2,13 +2,13 @@ FROM petrepatrasc/docker-ubuntu
 MAINTAINER Petre Pătrașc <petre@dreamlabs.ro>
 ENV REFRESHED_AT 2016-01-29 21:41:00
 
-ENV PPA_PACKAGE=php5 \
+ENV PPA_PACKAGE=php7.0 \
     PPA_NAME=php \
     PHP_IGNORE_ENVIRONMENT_SETTINGS=false
 
 # Conf settings
-ENV PHP_CONF_FILE=/etc/php5/fpm/conf.d/20-system.ini \
-    PHP_CONF_FILE_CLI=/etc/php5/cli/conf.d/20-system.ini \
+ENV PHP_CONF_FILE=/etc/php/7.0/fpm/conf.d/20-system.ini \
+    PHP_CONF_FILE_CLI=/etc/php/7.0/cli/conf.d/20-system.ini \
     PHP_CONF_TIMEZONE=UTC \
     PHP_CONF_MAX_EXECUTION_TIME=30 \
     PHP_CONF_UPLOAD_LIMIT=40M \
@@ -18,7 +18,7 @@ ENV PHP_CONF_FILE=/etc/php5/fpm/conf.d/20-system.ini \
     PHP_CONF_ERROR_REPORTING=0
 
 # Pool settings
-ENV PHP_POOL_FILE=/etc/php5/fpm/pool.d/20-system.pool.conf \
+ENV PHP_POOL_FILE=/etc/php/7.0/fpm/pool.d/20-system.pool.conf \
     PHP_POOL_USER=www-data \
     PHP_POOL_GROUP=www-data \
     PHP_POOL_LISTEN_HOST=127.0.0.1 \
@@ -41,9 +41,7 @@ RUN add-apt-repository ppa:ondrej/${PPA_NAME} && \
         ${PPA_PACKAGE}-intl \
         ${PPA_PACKAGE}-imap \
         ${PPA_PACKAGE}-mcrypt \
-        ${PPA_PACKAGE}-memcached \
         ${PPA_PACKAGE}-mysql \
-        ${PPA_PACKAGE}-ldap \
         supervisor \
         netcat
 
@@ -55,14 +53,16 @@ RUN cd /tmp && \
 # Supervisor
 ADD supervisor /etc/supervisor/
 
-# Add PHP5-FPM Configuration Files
-ADD php5-fpm /etc/php5/
+# Add PHP7-FPM Configuration Files
+ADD php7-fpm /etc/php/7.0/
 
 # Make sure to run PHP as not daemonized
-RUN sed -i 's/;daemonize = yes/daemonize = no/g' /etc/php5/fpm/php-fpm.conf && \
-		rm -f /etc/php5/fpm/pool.d/www.conf
+RUN sed -i 's/;daemonize = yes/daemonize = no/g' /etc/php/7.0/fpm/php-fpm.conf && \
+		rm -f /etc/php/7.0/fpm/pool.d/www.conf
+
+RUN mkdir /run/php/
 
 ADD commands /root/commands
-WORKDIR /etc/php5
+WORKDIR /etc/php/7.0/
 EXPOSE 9000
 CMD ["/root/commands/init.sh"]
