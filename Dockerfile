@@ -2,10 +2,13 @@ FROM petrepatrasc/docker-ubuntu
 MAINTAINER Petre Pătrașc <petre@dreamlabs.ro>
 ENV REFRESHED_AT 2015-10-12 21:41:00
 
+ENV REPOSITORY_VERSION=5.6 \
+    REPOSITORY_PACKAGE=php5
+
 # Conf settings
-ENV PHP_CONF_FILE=/etc/php5/fpm/conf.d/99-system.ini \
-    PHP_CONF_FILE_CLI=/etc/php5/cli/conf.d/99-system.ini \
-    PHP_CONF_TIMEZONE=Europe/London \
+ENV PHP_CONF_FILE=/etc/php5/fpm/conf.d/20-system.ini \
+    PHP_CONF_FILE_CLI=/etc/php5/cli/conf.d/20-system.ini \
+    PHP_CONF_TIMEZONE=Europe/UTC \
     PHP_CONF_MAX_EXECUTION_TIME=30 \
     PHP_CONF_UPLOAD_LIMIT=40M \
     PHP_CONF_PHAR_READONLY=off \
@@ -26,7 +29,7 @@ ENV PHP_CONF_FILE=/etc/php5/fpm/conf.d/99-system.ini \
     PHP_CONF_XDEBUG_TRACE_OUTPUT_NAME=trace.out.%t
 
 # Pool settings
-ENV PHP_POOL_FILE=/etc/php5/fpm/pool.d/99-system.pool.conf \
+ENV PHP_POOL_FILE=/etc/php5/fpm/pool.d/20-system.pool.conf \
     PHP_POOL_USER=www-data \
     PHP_POOL_GROUP=www-data \
     PHP_POOL_LISTEN_HOST=127.0.0.1 \
@@ -39,20 +42,20 @@ ENV PHP_POOL_FILE=/etc/php5/fpm/pool.d/99-system.pool.conf \
     PHP_POOL_CATCH_WORKERS_OUTPUT=yes
 
 # Install PHP
-RUN add-apt-repository ppa:ondrej/php5-5.6 && \
+RUN add-apt-repository ppa:ondrej/${REPOSITORY_PACKAGE}-${REPOSITORY_VERSION} && \
     apt-get update -qq && \
     apt-get install -qq -y \
-        php5-fpm \
-        php5-curl \
-        php5-cli \
-        php5-json \
-        php5-intl \
-        php5-imap \
-        php5-mcrypt \
-        php5-xdebug \
-        php5-memcached \
-        php5-mysql \
-        php5-ldap \
+        ${REPOSITORY_PACKAGE}-fpm \
+        ${REPOSITORY_PACKAGE}-curl \
+        ${REPOSITORY_PACKAGE}-cli \
+        ${REPOSITORY_PACKAGE}-json \
+        ${REPOSITORY_PACKAGE}-intl \
+        ${REPOSITORY_PACKAGE}-imap \
+        ${REPOSITORY_PACKAGE}-mcrypt \
+        ${REPOSITORY_PACKAGE}-xdebug \
+        ${REPOSITORY_PACKAGE}-memcached \
+        ${REPOSITORY_PACKAGE}-mysql \
+        ${REPOSITORY_PACKAGE}-ldap \
         supervisor \
         netcat
 
@@ -73,5 +76,5 @@ RUN sed -i 's/;daemonize = yes/daemonize = no/g' /etc/php5/fpm/php-fpm.conf && \
 
 ADD commands /root/commands
 WORKDIR /etc/php5
-EXPOSE $PHP_POOL_LISTEN_PORT
+EXPOSE 9000
 CMD ["/root/commands/init.sh"]
