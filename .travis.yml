@@ -4,10 +4,10 @@ services:
   - docker
 
 before_install:
-  - docker build -t petrepatrasc/docker-php-fpm-development .
+  - docker build -t petrepatrasc/docker-php-fpm .
 
 script:
-  - docker run -d --name php_dev petrepatrasc/docker-php-fpm-development
+  - docker run -d --name php_production petrepatrasc/docker-php-fpm
 
 after_script:
   - sudo docker kill $(docker ps -q);

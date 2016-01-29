@@ -2,9 +2,11 @@
 
 DIR=$(dirname "$0");
 
-"$DIR/setup-fpm-conf.sh";
-"$DIR/setup-cli-conf.sh";
-"$DIR/setup-fpm-pool.sh";
+if [[ ${PHP_IGNORE_ENVIRONMENT_SETTINGS} != "true" ]]; then
+  "$DIR/setup-fpm-conf.sh";
+  "$DIR/setup-cli-conf.sh";
+  "$DIR/setup-fpm-pool.sh";
+fi
 
 touch /var/log/php5-fpm.log;
 exec supervisord -n -c /etc/supervisor/supervisord.conf;

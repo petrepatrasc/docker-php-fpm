@@ -1,10 +1,10 @@
 FROM petrepatrasc/docker-ubuntu
 MAINTAINER Petre Pătrașc <petre@dreamlabs.ro>
-ENV REFRESHED_AT 2015-10-12 21:41:00
+ENV REFRESHED_AT 2016-01-29 21:41:00
 
-ENV PPA_VERSION=5.5 \
-    PPA_PACKAGE=php5 \
-    PPA_NAME=php5
+ENV PPA_PACKAGE=php5 \
+    PPA_NAME=php \
+    PHP_IGNORE_ENVIRONMENT_SETTINGS=false
 
 # Conf settings
 ENV PHP_CONF_FILE=/etc/php5/fpm/conf.d/20-system.ini \
@@ -14,8 +14,8 @@ ENV PHP_CONF_FILE=/etc/php5/fpm/conf.d/20-system.ini \
     PHP_CONF_UPLOAD_LIMIT=40M \
     PHP_CONF_PHAR_READONLY=off \
     PHP_CONF_MEMORY_LIMIT=512M \
-    PHP_CONF_DISPLAY_ERRORS=on \
-    PHP_CONF_ERROR_REPORTING=E_ALL
+    PHP_CONF_DISPLAY_ERRORS=off \
+    PHP_CONF_ERROR_REPORTING=0
 
 # Pool settings
 ENV PHP_POOL_FILE=/etc/php5/fpm/pool.d/20-system.pool.conf \
